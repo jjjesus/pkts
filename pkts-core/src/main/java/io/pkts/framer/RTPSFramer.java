@@ -25,7 +25,7 @@ public class RTPSFramer implements Framer<TransportPacket, RtpsPacket> {
         final int index = buffer.getReaderIndex();
 
         try {
-            final Buffer headers = buffer.readBytes(16);
+            final Buffer headers = buffer.readBytes(4);
             final Buffer payload = buffer.slice(buffer.capacity());
             return new RtpsPacketImpl(parent, headers, payload);
         } catch (final IndexOutOfBoundsException e) {
