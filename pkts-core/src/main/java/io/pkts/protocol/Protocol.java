@@ -21,6 +21,7 @@ public enum Protocol {
     PCAP("pcap", Layer.LAYER_1),
     RTP("rtp", Layer.LAYER_7),
     RTCP("rtcp", Layer.LAYER_7),
+    RTPS("rtps", Layer.LAYER_7),
     UNKNOWN("unknown", null);
 
     private final String name;
