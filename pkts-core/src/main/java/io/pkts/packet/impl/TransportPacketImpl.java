@@ -5,6 +5,7 @@ package io.pkts.packet.impl;
 
 import io.pkts.buffer.Buffer;
 import io.pkts.framer.RTPFramer;
+import io.pkts.framer.RTPSFramer;
 import io.pkts.framer.SIPFramer;
 import io.pkts.packet.IPPacket;
 import io.pkts.packet.Packet;
@@ -21,6 +22,7 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
 
     private static final SIPFramer sipFramer = new SIPFramer();
     private static final RTPFramer rtpFramer = new RTPFramer();
+    private static final RTPSFramer rtpsFramer = new RTPSFramer();
 
     private final IPPacket parent;
 
@@ -115,7 +117,9 @@ public abstract class TransportPacketImpl extends AbstractPacket implements Tran
             if (rtp != null) {
                 return rtp;
             }
-        }
+	    } else if (rtpsFramer.accept(payload)) {
+            return rtpsFramer.frame(this, payload);
+	    }
 
         return new UnknownApplicationPacketImpl(this, payload);
     }

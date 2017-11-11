@@ -25,25 +25,8 @@ public class RTPSFramer implements Framer<TransportPacket, RtpsPacket> {
         final int index = buffer.getReaderIndex();
 
         try {
-
-            // An RTP packet has a least 12 bytes but can contain more depending on
-            // extensions, padding etc. Figure that out.
-            final Buffer headers = buffer.readBytes(12);
-            final Byte b = headers.getByte(0);
-            final boolean hasPadding = (b & 0x20) == 0x020;
-            final boolean hasExtension = (b & 0x10) == 0x010;
-            final int csrcCount = b & 0x0F;
-
-            if (hasExtension) {
-                final short extensionHeaders = buffer.readShort();
-                final int length = buffer.readUnsignedShort();
-                final Buffer extensionData = buffer.readBytes(length);
-            }
-
-            if (hasPadding || hasExtension || csrcCount > 0) {
-                // throw new RuntimeException("TODO - have not implemented the case of handling padding, extensions etc");
-            }
-            final Buffer payload = buffer.slice();
+            final Buffer headers = buffer.readBytes(16);
+            final Buffer payload = buffer.slice(buffer.capacity());
             return new RtpsPacketImpl(parent, headers, payload);
         } catch (final IndexOutOfBoundsException e) {
             buffer.setReaderIndex(index);
