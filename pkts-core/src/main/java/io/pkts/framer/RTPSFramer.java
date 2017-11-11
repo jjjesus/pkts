@@ -48,6 +48,6 @@ public class RTPSFramer implements Framer<TransportPacket, RtpsPacket> {
         final byte b = data.getByte(1);
         final byte c = data.getByte(2);
         final byte d = data.getByte(3);
-        return a == 'R' && b == 'T' && c == 'P' && d == 'S';
+        return a == 'R' && b == 'T' && c == 'P' && (d == 'S' || d == 'X');
 	}
 }
